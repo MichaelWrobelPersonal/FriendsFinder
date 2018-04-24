@@ -1,25 +1,22 @@
+module.exports = function(app, path) {
 // Dependencies
 // =============================================================
-var express = require("express");
-//var bodyParser = require("body-parser");
-var path = require("path");
-
-// Sets up the Express App
+//
+// Note: optionally can just require path instea of passing it in
+//    var path = require("path");
 // =============================================================
-var app = express();
 
 // =============================================================
 // Page Routes
 // =============================================================
 
-app.get("/", function(req, res) {
-    console.log("Reading... ", __dirname + "/app/public/home/html");
-    res.sendFile(path.join(__dirname, "app/public/home.html"));
-});
+    app.get("/", function(req, res) {
+        console.log("Reading... ", __dirname + "/../public/home/html");
+        res.sendFile(path.join(__dirname, "/../public/home.html"));
+    });
 
-app.get("/survey", function(req, res) {
-    console.log("Reading... ", __dirname + "/app/public/html");
-    res.sendFile(path.join(__dirname, "app/public/survey.html"));
-});
-
-module.exports(app.get);
+    app.get("/survey", function(req, res) {
+        console.log("Reading... ", __dirname + "/../public/html");
+        res.sendFile(path.join(__dirname, "/../public/survey.html"));
+    });
+}
