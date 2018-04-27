@@ -35,8 +35,8 @@
               </div>
 
               <div class="form-group">
-                <label for="Link to Photo (Optional)">Photo</label>
-                <input type="text" class="form-control optional" id="photo">
+                <label for="photo">Photo (Optional)</label>
+                <input type="file" class="form-control optional" id="photo">
               </div>
             </form>
             <hr>
@@ -157,8 +157,12 @@
               <button type="submit" class="btn btn-primary btn-md" id="add-btn"><span class="glyphicon glyphicon-fire"></span>Submit the Survey</button>
             </div>
           </div>
-        </div>
-
+ <!--       </div> -->
+ <!--       <div id="share-options"> -->
+            <!-- thsi gets filled in by the post processing prior to launching the modal box -->
+ <!--       </div> -->
+ <!--       <script src="modal-dialog.js"></script>
+        <script src="modal-init.js"></script> -->
       </div>
     </div>
   </div>
@@ -167,7 +171,7 @@
    // Get info
    $("#add-btn").on("click", function(event) {
       event.preventDefault();
-
+      console.log('Checking Answers');
       // Check the user inputs
       function validateInputs() {
         var isOK = true;
@@ -188,7 +192,7 @@
       }
 
       // If all required fields are filled
-      if (validateForm()) {
+      if (validateInputs()) {
         // Create an object for the user"s data
         var friendInfo = {
           routeName: "",
@@ -207,13 +211,18 @@
             $("#q10").val()
           ]
         };
-
+        console.log('Posting Answers')
         // AJAX post the data to the friends API.
-        $.post("/api/friend", friendInfo, function(data) {
+        $.post("/api/friends", friendInfo, function(data) {
 
           // Grab the result from the AJAX post so that the best match's name and photo are displayed.
           $("#match-name").text(data.name);
           $("#match-img").attr("src", data.photo);
+
+        // Find a amatch and save the data
+        localStorage.clear();
+        localStorage.setItem("user", data.name);
+        localStorage.setItem("friend", findMatch(data.name));
 
           // Show the modal with the best match
           $("#results-modal").modal("toggle");
@@ -223,13 +232,68 @@
         alert("Please fill out all questions before submitting!");
       }
 
-      // Question: What does this code do??
+      // Post the survey
       $.post("/api/friends", friendInfo)
-      .then(function(data) {
-        console.log(data);
+      .then(function(surveyedUser) {
+        console.log('user: ' + surveyedUser);
         alert("Looking for a friend...");
+        let matchedFriend = findMatch(surveyedUser);
+        connsole.log('match: ' + matchedFriend)
+ 
+        // Save the result locally
+        localStorage.clear();
+        localStorage.setItem("user", surveyedUser);
+        localStorage.setItem("friend", matchedFriend);
+
+        // Open up antothe window witht he results
+        window.open("./dialog.html");
       });
     });
+
+    let findMatch = function()
+    {
+      // Get the list of people
+      $.get("/all/friends", function(data) {
+        console.log(data);
+        if (data) {
+          for (let j=0; j<data.length; j++ )
+          {
+              friends.push(data[i]);
+          }
+        }
+        else {
+          $("#name").text("How sad!. Your friend was not found!");
+          $("#stats").hide();
+        }
+      });
+
+
+
+      let smallestDifferance = 50.0;
+      let currentDifferance = 0;
+      let foundFriend = null;
+      let friends = null;
+      for (var i=0; i<friends.length; i++ )
+      {
+        currentDifferance = findFriendCompatibility( friends[i] );
+        if ( currentDifferance < smallestDifferance )
+        {
+           smallestDifferance = currentDifferance;
+           foundFriend = friends[i];
+        }
+      }
+      return foundFriend;
+    }
+
+    let findFriendCompatibility = function( userScores )
+    {
+      let totalDifferance = 0;
+      for( var i=0; i<10; i++)
+      {
+        totalDifferance += abs(userScores[i] - friends[i]);
+      };
+      return totalDifferance;
+    }
   </script>
 
 </body>

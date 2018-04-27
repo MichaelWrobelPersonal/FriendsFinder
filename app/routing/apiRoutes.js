@@ -14,6 +14,7 @@ module.exports = function(app, path, friends) {
 
   // Get all friends
   app.get("/all/friends", function(req, res) {
+      console.log('looking for friends...');
       res.json(friends);
   });
   
@@ -21,7 +22,7 @@ module.exports = function(app, path, friends) {
   app.get("/api/:friends?", function(req, res) {
     var selection = req.params.friends;
     if (selection) {
-      console.log(selection);  
+      console.log('Searching for ' + selection);  
       for (var i = 0; i < friends.length; i++) {
         if (selection === friends[i].routeName) {
           return res.json(friends[i]);
@@ -37,7 +38,7 @@ module.exports = function(app, path, friends) {
   app.post("/api/friends", function(req, res) {
     var newFriend = req.body;
     newFriend.routeName = newFriend.name.replace(/\s+/g, "").toLowerCase(); 
-    console.log(newFriend);  
+    console.log('Hello ' + newFriend.name + ' welcome to the group!');  
     friends.push(newFriend);
     res.json(newFriend);
   });

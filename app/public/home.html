@@ -44,7 +44,8 @@
             <div class="well">
               <h2 id="name">Mike</h2>
               <div id="stats">
-                <h3><strong>Photo:</strong> <span id="photo"></span></h3>
+                <h3><strong>Photo:</strong></h3>
+                   <img id="photo" src="./Mike Wrobel.jpg" alt="Mike Wrobel's picture.">
               </div>
             </div>
           </div>
@@ -54,6 +55,18 @@
   </div>
 
   <script type="text/javascript">
+    let friend = localStorage.getItem("friend");
+    if ( friend != null )
+    {
+        $("#name").text(friend.name);
+        $("#photo").attr(src, friend.photo);
+    }
+ //   else
+ //   {
+ //     $("#name").text("Mike");    
+ //     $("#photo").attr(src, path.join(__dirname + "./Mike Wrobel.jpg");
+ //   }
+
     $("#search-btn").on("click", function() {
       var searchedFriend = $("#friend-search").val().trim();
 

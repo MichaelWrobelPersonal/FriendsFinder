@@ -16,7 +16,12 @@ module.exports = function(app, path) {
     });
 
     app.get("/survey", function(req, res) {
-        console.log("Reading... ", __dirname + "/../public/html");
+        console.log("Reading... ", __dirname + "/../public/survey.html");
         res.sendFile(path.join(__dirname, "/../public/survey.html"));
+    });
+
+    app.get("/dialog", function(req, res) {
+        console.log("Reading... ", __dirname + "/../public/dialog.html");
+        res.sendFile(path.join(__dirname, "/../public/dialog.html"));
     });
 }
