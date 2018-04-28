@@ -28,7 +28,7 @@ var friends = [
     {
       routeName: "mike",
       name: "Mike",
-      photo: "",
+      photo: "./assets/Mike-Wrobel.jpg",
       scores: [1,2,2,4,2,5,1,3,2,1] 
     }
   ];

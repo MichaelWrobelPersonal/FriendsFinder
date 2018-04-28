@@ -35,11 +35,14 @@
   </div>
 
   <script type="text/javascript">
-    let friend = localStorage.getItem("friend");
+    let user = localStorage.getItem('user');
+    let friend = localStorage.getItem('friend');
+    let friend_name = localStorage.getItem('name');
+    let friend_photo = localStorage.getItem('photo');
     if ( friend != null )
     {
-        $("#name").text(friend.name);
-        $("#photo").attr(src, friend.photo);
+        $("#name").text(friend_name);
+        $("#photo").attr('src', friend_photo);
     }
  
     $("close-btn").on("click", function() {

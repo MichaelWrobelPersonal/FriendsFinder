@@ -16,7 +16,7 @@
       <h1>Friend Finder Survey</h1>
       <h3>Answer some questions to find someone with similar interests!</h3>
       <hr>
-      <a href="/"><button type="button" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-eye-open"></span> View Friends</button></a>
+      <a href="/"><button type="button" id="go-home" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-eye-open"></span> View Friends</button></a>
     </div>
     <div class="row">
 
@@ -165,7 +165,6 @@
    // Get info
    $("#add-btn").on("click", function(event) {
       event.preventDefault();
-      console.log('Checking Answers');
       // Check the user inputs
       function validateInputs() {
         var isOK = true;
@@ -205,7 +204,6 @@
             $("#q10").val()
           ]
         };
-        console.log('Posting Answers')
         // AJAX post the data to the friends API.
         $.post("/api/friends", friendInfo, function(data) {
 
@@ -215,7 +213,6 @@
 
           // Find a amatch and save the data
           localStorage.clear();
-          console.log('stash user: ' + data.name);
           localStorage.setItem('user', data.name);
           findMatch(friendInfo);
 
@@ -233,11 +230,9 @@
       let friends = new Array();
       // Get the list of people
       $.get("/all/friends", function(data) {
-        console.log('findMatch: ' + data);
         if (data) {
           for (var key in data )
           {
-              console.log('Pushing: ' + data[key])
               friends.push(data[key]);
           }
         }
@@ -245,8 +240,6 @@
           $("#name").text("How sad!. No friends found!");
           $("#stats").hide();
         }
-      
-         console.log('Looking for a best friend...')
          let smallestDifferance = 50.0;
          let currentDifferance = 0;
          let foundFriend = friends[0];
@@ -256,16 +249,19 @@
             if (( currentDifferance < smallestDifferance )
             &&  ( currentDifferance > 0.0))
             {
-               console.log('Found ' + friends[i].name);
                smallestDifferance = currentDifferance;
                foundFriend = friends[i];
             }
           }
 
-          console.log('save friend: ' + foundFriend.name );
+          // Save the results in local storage for access by other pages
           localStorage.setItem('friend', foundFriend);
           localStorage.setItem('name', foundFriend.name);
           localStorage.setItem('photo',foundFriend.photo);
+          
+          // Tell user they can go home to view results
+          $('#go-home').text('View Your Match');
+
           // Open up the window with he results
           window.open("./dialog.html");
   
@@ -275,19 +271,13 @@
     let findFriendCompatibility = function( user, friend )
     {
       let totalDifferance = 0;
-      console.log('Find User: '+ user.name );
-      console.log('Checking Friend: ' + friend.name);
       if( user.name != friend.name)
       {
         for( var i=0; i<10; i++)
         {
-          console.log('index: '+i);
-           console.log('friend.score(s): '+ parseFloat(friend.scores[i])); 
-           console.log('user.score(s): '+ parseFloat(user.scores[i])); 
           totalDifferance += Math.abs(parseFloat(user.scores[i]) - parseFloat(friend.scores[i]));
         };
       }
-      console.log('findFriendCompatibility totalDifferance: ' + totalDifferance);
       return totalDifferance;
     }
   </script>
