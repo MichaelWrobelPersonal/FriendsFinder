@@ -219,79 +219,96 @@
           $("#match-name").text(data.name);
           $("#match-img").attr("src", data.photo);
 
-        // Find a amatch and save the data
-        localStorage.clear();
-        localStorage.setItem("user", data.name);
-        localStorage.setItem("friend", findMatch(data.name));
+          // Find a amatch and save the data
+          localStorage.clear();
+          console.log('stash user: ' + data.name);
+          localStorage.setItem("user", data.name);
+          findMatch(friendInfo);
 
-          // Show the modal with the best match
-          $("#results-modal").modal("toggle");
-
+          // Open up the window with he results
+          window.open("./dialog.html");
+  
         });
       } else {
         alert("Please fill out all questions before submitting!");
       }
 
-      // Post the survey
-      $.post("/api/friends", friendInfo)
-      .then(function(surveyedUser) {
-        console.log('user: ' + surveyedUser);
-        alert("Looking for a friend...");
-        let matchedFriend = findMatch(surveyedUser);
-        connsole.log('match: ' + matchedFriend)
- 
-        // Save the result locally
-        localStorage.clear();
-        localStorage.setItem("user", surveyedUser);
-        localStorage.setItem("friend", matchedFriend);
-
-        // Open up antothe window witht he results
-        window.open("./dialog.html");
-      });
+ //     // Post the survey
+ //     $.post("/api/friends", friendInfo)
+ //     .then(function(surveyedUser) {
+ //       console.log('user: ' + surveyedUser);
+ //       alert("Looking for a friend...");
+ //       let matchedFriend = findMatch(surveyedUser);
+ //       console.log('match: ' + matchedFriend);
+ //
+ //       // Save the result locally
+ //       localStorage.clear();
+ //       console.log('save user: ' + surveyedUser);
+ //       localStorage.setItem("user", surveyedUser);
+ //
+ //       // Open up the window with he results
+ //       window.open("./dialog.html");
+ //     });
     });
 
-    let findMatch = function()
+    let findMatch = function(user)
     {
+      let friends = new Array();
       // Get the list of people
       $.get("/all/friends", function(data) {
-        console.log(data);
+        console.log('findMatch: ' + data);
         if (data) {
-          for (let j=0; j<data.length; j++ )
+          for (var key in data )
           {
-              friends.push(data[i]);
+              console.log('Pushing: ' + data[key])
+              friends.push(data[key]);
           }
         }
         else {
-          $("#name").text("How sad!. Your friend was not found!");
+          $("#name").text("How sad!. No friends found!");
           $("#stats").hide();
         }
-      });
+      
+         console.log('Looking for a best friend...')
+         let smallestDifferance = 50.0;
+         let currentDifferance = 0;
+         let foundFriend = friends[0];
+         for (var i=0; i<friends.length; i++ )
+         {
+            currentDifferance = findFriendCompatibility( user, friends[i] );
+            if ( currentDifferance < smallestDifferance )
+            {
+               console.log('Found ' + friends[i].name);
+               smallestDifferance = currentDifferance;
+               foundFriend = friends[i];
+            }
+          }
 
+          console.log('save friend: ' + foundFriend.name );
+          localStorage.setItem("friend", foundFriend);
 
-
-      let smallestDifferance = 50.0;
-      let currentDifferance = 0;
-      let foundFriend = null;
-      let friends = null;
-      for (var i=0; i<friends.length; i++ )
-      {
-        currentDifferance = findFriendCompatibility( friends[i] );
-        if ( currentDifferance < smallestDifferance )
-        {
-           smallestDifferance = currentDifferance;
-           foundFriend = friends[i];
-        }
-      }
-      return foundFriend;
+          // Open up the window with he results
+          window.open("./dialog.html");
+  
+       });
     }
 
-    let findFriendCompatibility = function( userScores )
+    let findFriendCompatibility = function( user, friend )
     {
       let totalDifferance = 0;
-      for( var i=0; i<10; i++)
+      console.log('Find User: '+ user.name );
+      console.log('Checking Friend: ' + friend.name);
+      if( user.name != friend.name)
       {
-        totalDifferance += abs(userScores[i] - friends[i]);
-      };
+        for( var i=0; i<10; i++)
+        {
+          console.log('index: '+i);
+           console.log('friend.score(s): '+ parseFloat(friend.scores[i])); 
+           console.log('user.score(s): '+ parseFloat(user.scores[i])); 
+          totalDifferance += Math.abs(parseFloat(user.scores[i]) - parseFloat(friend.scores[i]));
+        };
+      }
+      console.log('findFriendCompatibility totalDifferance: ' + totalDifferance);
       return totalDifferance;
     }
   </script>

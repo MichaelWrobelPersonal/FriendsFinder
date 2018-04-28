@@ -42,10 +42,10 @@
           </div>
           <div class="panel-body">
             <div class="well">
-              <h2 id="name">Mike</h2>
+              <h2 id="name"></h2>
               <div id="stats">
                 <h3><strong>Photo:</strong></h3>
-                   <img id="photo" src="./Mike Wrobel.jpg" alt="Mike Wrobel's picture.">
+                   <img id="photo" src="~" alt="">
               </div>
             </div>
           </div>
@@ -58,8 +58,10 @@
     let friend = localStorage.getItem("friend");
     if ( friend != null )
     {
+      console.log('friend: ' + friend);
+      console.log('local-storage - friend.name: ' + friend.name + ' freind.photo: '+ friend.photo)
         $("#name").text(friend.name);
-        $("#photo").attr(src, friend.photo);
+        $("#photo").attr('src', friend.photo);
     }
  //   else
  //   {
@@ -75,7 +77,7 @@
       searchedFriend = searchedFriend.replace(/\s+/g, "").toLowerCase();
 
       $.get("/api/" + searchedFriend, function(data) {
-        console.log(data);
+        console.log('searchedFriend data: ' + data);
         if (data) {
           $("#stats").show();
           $("#name").text(data.name);
