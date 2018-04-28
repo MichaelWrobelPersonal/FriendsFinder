@@ -216,7 +216,7 @@
           // Find a amatch and save the data
           localStorage.clear();
           console.log('stash user: ' + data.name);
-          localStorage.setItem("user", data.name);
+          localStorage.setItem('user', data.name);
           findMatch(friendInfo);
 
           // Open up the window with he results
@@ -263,8 +263,9 @@
           }
 
           console.log('save friend: ' + foundFriend.name );
-          localStorage.setItem("friend", foundFriend);
-
+          localStorage.setItem('friend', foundFriend);
+          localStorage.setItem('name', foundFriend.name);
+          localStorage.setItem('photo',foundFriend.photo);
           // Open up the window with he results
           window.open("./dialog.html");
   

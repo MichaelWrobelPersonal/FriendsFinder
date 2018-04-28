@@ -55,13 +55,22 @@
   </div>
 
   <script type="text/javascript">
-    let friend = localStorage.getItem("friend");
+    let user = localStorage.getItem('user');
+    let friend = localStorage.getItem('friend');
+    let friend_name = localStorage.getItem('name');
+    let friend_photo = localStorage.getItem('photo');
+    if( user != null )
+    {
+       console.log('user: ' + user); 
+    }
     if ( friend != null )
     {
       console.log('friend: ' + friend);
+      console.log('friend_name: ' + friend_name);
+      console.log('friend_photo: ' + friend_photo);
       console.log('local-storage - friend.name: ' + friend.name + ' friend.photo: '+ friend.photo)
-        $("#name").text(friend.name);
-        $("#photo").attr('src', friend.photo);
+        $("#name").text(friend_name);
+        $("#photo").attr('src', friend_photo);
     }
     else
     {
