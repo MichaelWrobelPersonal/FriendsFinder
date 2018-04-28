@@ -157,12 +157,6 @@
               <button type="submit" class="btn btn-primary btn-md" id="add-btn"><span class="glyphicon glyphicon-fire"></span>Submit the Survey</button>
             </div>
           </div>
- <!--       </div> -->
- <!--       <div id="share-options"> -->
-            <!-- thsi gets filled in by the post processing prior to launching the modal box -->
- <!--       </div> -->
- <!--       <script src="modal-dialog.js"></script>
-        <script src="modal-init.js"></script> -->
       </div>
     </div>
   </div>
@@ -232,23 +226,6 @@
       } else {
         alert("Please fill out all questions before submitting!");
       }
-
- //     // Post the survey
- //     $.post("/api/friends", friendInfo)
- //     .then(function(surveyedUser) {
- //       console.log('user: ' + surveyedUser);
- //       alert("Looking for a friend...");
- //       let matchedFriend = findMatch(surveyedUser);
- //       console.log('match: ' + matchedFriend);
- //
- //       // Save the result locally
- //       localStorage.clear();
- //       console.log('save user: ' + surveyedUser);
- //       localStorage.setItem("user", surveyedUser);
- //
- //       // Open up the window with he results
- //       window.open("./dialog.html");
- //     });
     });
 
     let findMatch = function(user)
@@ -276,7 +253,8 @@
          for (var i=0; i<friends.length; i++ )
          {
             currentDifferance = findFriendCompatibility( user, friends[i] );
-            if ( currentDifferance < smallestDifferance )
+            if (( currentDifferance < smallestDifferance )
+            &&  ( currentDifferance > 0.0))
             {
                console.log('Found ' + friends[i].name);
                smallestDifferance = currentDifferance;

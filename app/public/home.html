@@ -59,16 +59,27 @@
     if ( friend != null )
     {
       console.log('friend: ' + friend);
-      console.log('local-storage - friend.name: ' + friend.name + ' freind.photo: '+ friend.photo)
+      console.log('local-storage - friend.name: ' + friend.name + ' friend.photo: '+ friend.photo)
         $("#name").text(friend.name);
         $("#photo").attr('src', friend.photo);
     }
- //   else
- //   {
- //     $("#name").text("Mike");    
- //     $("#photo").attr(src, path.join(__dirname + "./Mike Wrobel.jpg");
- //   }
+    else
+    {
+      $.get("/best/friend", function(data) {
+        console.log('Best Friend data: ' + data);
+        if (data) {
+          $("#stats").show();
+          $("#name").text(data.name);
+          $("#photo").text(data.photo);
+          }
+        else {
+          $("#name").text("How sad!. You do not have a best friend.");
+          $("#stats").hide();
+        }
+      });
+    }
 
+ 
     $("#search-btn").on("click", function() {
       var searchedFriend = $("#friend-search").val().trim();
 

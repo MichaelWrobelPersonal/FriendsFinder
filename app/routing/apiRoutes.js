@@ -18,6 +18,12 @@ module.exports = function(app, path, friends) {
       res.json(friends);
   });
   
+// Get all friends
+app.get("/best/friend", function(req, res) {
+  console.log('looking for best friends...');
+  res.json(bestFriend);
+});
+
   // Search for Specific Friend (or all friends) - provides JSON
   app.get("/api/:friends?", function(req, res) {
     var selection = req.params.friends;
