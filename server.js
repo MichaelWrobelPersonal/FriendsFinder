@@ -18,6 +18,9 @@ var PORT = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// Sets up support for Static resources
+app.use(express.static('./app/public/'));
+
 // Route References
 // =============================================================
 // Sets up the external routes files
