@@ -5,7 +5,7 @@
 A Node/Express implementation of a questionare based search for people with similar interest.
 
 # Deployed site
-[Friend-Finder]https://fathomless-caverns-63994.herokuapp.com
+[FriendFinder]https://fathomless-caverns-63994.herokuapp.com
 
 # Technology Details
 This is an Express/NodeJS project with an  HTML5/CSS3/Javascript based front-end
